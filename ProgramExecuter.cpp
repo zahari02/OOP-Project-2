@@ -132,6 +132,7 @@ void ProgramExecuter::parseExec()
         parse_0();
         exit();
         stop_program = true;
+        return;
     }
     if(cnum == 6)  // add planet <planet name>
     {
@@ -150,33 +151,45 @@ void ProgramExecuter::parseExec()
         parse_ss();
         universe.removeJedi(args[0],args[1]);
     }
-    if(cnum == 9) //
+    if(cnum == 9) // promote_jedi <jedi_name> <multiplier>
     {
-
+        double mult;
+        parse_sd(mult);
+        universe.promoteJedi(args[0],mult);
     }
-    if(cnum == 10)
+    if(cnum == 10) // demote_jedi <jedi_name> <multiplier>
     {
-
+        double mult;
+        parse_sd(mult);
+        universe.demoteJedi(args[0],mult);
     }
-    if(cnum == 11)
+    if(cnum == 11) // get_strongest_jedi <planet_name>
     {
-
+        parse_s();
+        universe.getStrongest(args[0]);
     }
-    if(cnum == 12)
+    if(cnum == 12) //  get_youngest_jedi <planet_name> <jedi_rank>
     {
-
+        parse_ss();
+        universe.getYoungest(args[0],args[1]);
     }
-    if(cnum == 13)
+    if(cnum == 13) //   get_most_used_saber_color <planet_name> <jedi_rank>
     {
-
+        if(args.size()==2)
+            universe.getColour2(args[0],args[1]);
+        else if(args.size()==1)
+            universe.getColour(args[0]); // get_most_used_saber_color <planet_name>
+        else
+            throw exception();
     }
-    if(cnum == 14)
+    if(cnum == 14)  //  print <planet_name> (jedi)
     {
-
+        parse_s();
+        universe.print(args[0]);
     }
-    if(cnum == 15)
+    if(cnum == 15) //   <planet_name> + <planet_name>
     {
-
+        universe.print2(command,args[1]);
     }
 }
 
@@ -240,7 +253,7 @@ void ProgramExecuter::open(string fname)
 
     try
     {
-        universe.read(file);
+        universe.load(file);
     }
     catch(exception &e)
     {
@@ -267,7 +280,7 @@ void ProgramExecuter::save()
 }
 
 
-void saveas()
+void ProgramExecuter::saveas()
 {
     string fname;
     ofstream file;
@@ -277,7 +290,7 @@ void saveas()
         cout<<"Error saving file\n";
         return;
     }
-    universe.save(file)
+    universe.save(file);
     unsaved_changes = false;
     file.close();
 }
