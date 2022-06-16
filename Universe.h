@@ -1,5 +1,4 @@
 #include "Planet.h"
-
 #include <vector>
 #include <string>
 #include <iostream>
@@ -17,6 +16,12 @@ class Universe
 
     vector<Planet> planets;
     bool unsaved_changes;
+
+    Jedi* findJedi(string);
+    Planet* findPlanet(string);
+
+    void checkPlanet(string);
+    void checkJedi(string);
 
 public:
     Universe();
@@ -37,6 +42,7 @@ public:
     void getColour(string);
     void print(string);
     void print2(string,string);
+
 };
 
 #endif // UNIVERSE_H

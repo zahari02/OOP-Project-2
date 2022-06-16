@@ -27,7 +27,7 @@ void Jedi::save(ofstream &file)
     file<<rank.getRank()<< endl;
     file<<age<< endl;
     file<<colour<< endl;
-    file<<strength<< endl;;
+    file<<strength<< endl;
 }
 
 string& Jedi::getName()

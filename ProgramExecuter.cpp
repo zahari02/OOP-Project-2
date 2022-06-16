@@ -21,9 +21,10 @@ const vector<string> ProgramExecuter::commands =
 };
 
 const string ProgramExecuter::help =
-"The following commands are supported:\n"
 "All folders in filename <file> must be separated with '/' \n"
-"open <file>     opens <file>\n"
+"Possible ranks: YOUNGLING, INITIATE, PADAWAN,KNIGHT-ASPIRANT,KNIGHT,MASTER,BATTLE_MASTER,GRAND_MASTER\n"
+"The following commands are supported:\n"
+"open <file>     opens <file>; creates <file> if not found\n"
 "close      closes currently opened file without saving\n"
 "save       saves the currently open file\n"
 "save_as <file>      saves the currently open file in <file>\n"
@@ -72,6 +73,10 @@ void ProgramExecuter::mainMenu()
     {
         cout<<"Invalid command\n";
     }
+    catch(UniverseException &e)
+    {
+        cout<<e.what();
+    }
 }
 
 int ProgramExecuter::commandNumber()
@@ -90,7 +95,7 @@ void ProgramExecuter::parseExec()
     if(args.size() == 2 && args[0] == "+")
         cnum = 15;
 
-    if(cnum > 5 && opened == false)
+    if( ( cnum == 1 || cnum == 2 || cnum == 3 || cnum > 5 ) && opened == false)
     {
         cout<<"You must open file first\n";
         return;
@@ -261,6 +266,7 @@ void ProgramExecuter::open(string& fname)
         return;
     }
 
+    cout<<"File opened.\n";
     opened = true;
     file.close();
 }
@@ -275,6 +281,7 @@ void ProgramExecuter::save()
         return;
     }
     universe.save(file);
+    cout<<"File saved\n";
     file.close();
 }
 
@@ -290,12 +297,13 @@ void ProgramExecuter::saveas()
         return;
     }
     universe.save(file);
+    cout<<"File saved\n";
     file.close();
 }
 
 void ProgramExecuter::exit()
 {
-    if(universe.unsavedChanges() == true)
+    if(universe.unsavedChanges() == true && opened == true)
     {
         cout<<"You have an open file with unsaved changes, please select close or save(as) first.\n";
         read_command();
