@@ -20,7 +20,7 @@ private:
     static const string help;
 
     Universe universe;
-    bool opened,unsaved_changes;
+    bool opened;
     string filename;
 
     bool stop_program;
@@ -42,7 +42,7 @@ private:
     void parse_s();
     void parse_ps();
 
-    void open(string fname);
+    void open(string &fname);
     void save();
     void saveas();
     void exit();

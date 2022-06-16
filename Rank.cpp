@@ -18,6 +18,18 @@ Rank::Rank()
     rank_num=0;
 }
 
+
+Rank::Rank(string rank)
+{
+    rank_num = 0;
+    for(int i=0; i <= max_rank; i++)
+        if(ranks[i] == rank)
+        {
+            rank_num = i;
+            break;
+        }
+}
+
 bool Rank::validRank(string rank)
 {
     //string buff;
@@ -25,16 +37,6 @@ bool Rank::validRank(string rank)
         if(buff == rank)
             return true;
     return false;
-}
-
-void Rank::setRank(string rank)
-{
-    for(int i=0; i<=max_rank; i++)
-        if(ranks[i] == rank)
-        {
-            rank_num = i;
-            break;
-        }
 }
 
 string Rank::getRank()

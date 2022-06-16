@@ -13,10 +13,19 @@ using namespace std;
 
 class Universe
 {
+    static const int max_planets;
+
     vector<Planet> planets;
+    bool unsaved_changes;
+
 public:
+    Universe();
+
     void load(ifstream &);
     void save(ofstream &);
+    void close();
+    bool unsavedChanges();
+
     void addPlanet(string);
     void addJedi(string,string,string,int,string,double);
     void removeJedi(string,string);

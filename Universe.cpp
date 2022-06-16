@@ -1,13 +1,40 @@
 #include "Universe.h"
 
+const int Universe::max_planets = 10000;
+
+Universe::Universe()
+{
+    unsaved_changes = false;
+}
+
 void Universe::load(ifstream &file)
 {
+    int nplanets;
+    file>>nplanets;
+    if(nplanets < 0 || max_planets < nplanets)
+        throw exception();
 
+    planets.resize( nplanets );
+    for(int i=0; i<nplanets; i++)
+    {
+        planets[i].load(file);
+    }
 }
 
 void Universe::save(ofstream &file)
 {
+    unsaved_changes = false;
+}
 
+void Universe::close()
+{
+    planets.clear();
+    unsaved_changes = false;
+}
+
+bool Universe::unsavedChanges()
+{
+    return unsaved_changes;
 }
 
 void Universe::addPlanet(string name)

@@ -13,9 +13,11 @@ class Rank
 
 public:
 
+    static bool validRank(string rank);
+
     Rank();
-    bool validRank(string rank);
-    void setRank(string rank);
+    Rank(string rank);
+    //void setRank(string rank);
     string getRank();
     void promote();
     void demote();

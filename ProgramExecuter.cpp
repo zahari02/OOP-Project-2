@@ -43,7 +43,7 @@ const string ProgramExecuter::help =
 "<planet_name> + <planet_name>      prints info for two planets\n"
 ;
 
-ProgramExecuter::ProgramExecuter(): stop_program(false), opened(false), unsaved_changes(false)
+ProgramExecuter::ProgramExecuter(): stop_program(false), opened(false)
 {
 
 }
@@ -109,7 +109,7 @@ void ProgramExecuter::parseExec()
     {
         parse_0();
         opened = false;
-        unsaved_changes = false;
+        universe.close();
         cout<<"File closed.\n";
     }
     if(cnum == 2) // save
@@ -226,7 +226,7 @@ void ProgramExecuter::parse_s()
         throw exception();
 }
 
-void ProgramExecuter::open(string fname)
+void ProgramExecuter::open(string& fname)
 {
     if(opened)
     {
@@ -275,7 +275,6 @@ void ProgramExecuter::save()
         return;
     }
     universe.save(file);
-    unsaved_changes = false;
     file.close();
 }
 
@@ -291,13 +290,12 @@ void ProgramExecuter::saveas()
         return;
     }
     universe.save(file);
-    unsaved_changes = false;
     file.close();
 }
 
 void ProgramExecuter::exit()
 {
-    if(unsaved_changes == true)
+    if(universe.unsavedChanges() == true)
     {
         cout<<"You have an open file with unsaved changes, please select close or save(as) first.\n";
         read_command();
