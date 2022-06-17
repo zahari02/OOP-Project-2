@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 #ifndef PLANET_H
@@ -16,6 +17,8 @@ class Planet
     string name;
 
     void checkJedi(string);
+    void checkPopulated();
+    void checkRank(string rank);
 
 public:
 
@@ -26,11 +29,17 @@ public:
     void addJedi(string,string,int,string,double);
 
     string & getName();
+    vector<const Jedi*> getJedi();
 
     void print();
     Jedi* findJedi(string);
     void removeJedi(string);
     void printStrongest();
+    void printYoungest(string rank);
+    void printColourRank(string rank);
+    void printColourMaster();
+    void print_sorted();
+
 };
 
 #endif // PLANET_H

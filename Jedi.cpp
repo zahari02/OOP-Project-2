@@ -1,5 +1,18 @@
 #include "Jedi.h"
 
+bool Jedi::comp_names(const Jedi *jedi1,const Jedi *jedi2)
+{
+    return jedi1->name < jedi2->name;
+}
+
+bool Jedi::comp_rank(const Jedi *jedi1,const Jedi *jedi2)
+{
+    if(jedi1->rank.getRankNum() < jedi2->rank.getRankNum())
+        return true;
+    if( jedi1->rank.getRankNum() == jedi2->rank.getRankNum() )
+        return jedi1->name < jedi2->name;
+}
+
 Jedi::Jedi()
 {
 
@@ -30,7 +43,7 @@ void Jedi::save(ofstream &file)
     file<<strength<< endl;
 }
 
-string& Jedi::getName()
+string Jedi::getName()
 {
     return name;
 }
@@ -56,12 +69,17 @@ int Jedi::getAge()
     return age;
 }
 
-string& Jedi::getColour()
+string Jedi::getColour()
 {
     return colour;
 }
 
-void Jedi::print()
+string Jedi::getRank()
+{
+    return rank.getRank();
+}
+
+void Jedi::print() const
 {
     cout<<"Jedi: "<<name<< endl;
     cout<<"Rank: "<<rank.getRank()<< endl;

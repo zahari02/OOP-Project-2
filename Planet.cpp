@@ -8,6 +8,27 @@ void Planet::checkJedi(string jname)
         throw UniverseException("Jedi not found\n");
 }
 
+void Planet::checkPopulated()
+{
+    if(people.empty())
+        throw UniverseException("No jedi on planet\n");
+}
+
+void Planet::checkRank(string rank)
+{
+    bool found = false;
+    for(int i=0; i<people.size(); i++)
+    {
+        if( people[i].getRank() == rank)
+        {
+            found = true;
+            break;
+        }
+    }
+    if(!found)
+        throw UniverseException("No jedi with rank " + rank + " on planet\n");
+}
+
 Planet::Planet()
 {
 
@@ -56,6 +77,14 @@ string& Planet::getName()
     return name;
 }
 
+vector<const Jedi*> Planet::getJedi()
+{
+    vector<const Jedi*> jedi_p( people.size() );
+    for(int i=0; i< people.size(); i++)
+        jedi_p[i] = &people[i];
+    return jedi_p;
+}
+
 void Planet::print()
 {
     cout<<"Planet: "<<name<< endl;
@@ -85,11 +114,7 @@ void Planet::removeJedi(string jname)
 
 void Planet::printStrongest()
 {
-    if(people.empty())
-    {
-        cout<<"No jedi on planet\n";
-        return;
-    }
+    checkPopulated();
     Jedi jedi = people[0];
     for(int i=1; i<people.size(); i++)
     {
@@ -97,4 +122,91 @@ void Planet::printStrongest()
             jedi = people[i];
     }
     jedi.print();
+}
+
+void Planet::printYoungest(string rank)
+{
+    checkPopulated();
+    checkRank(rank);
+    Jedi * jedi = nullptr;
+    for(int i=0; i<people.size(); i++)
+    {
+        if( people[i].getRank() == rank)
+        {
+            if(jedi==nullptr)
+                jedi = &people[i];
+            else
+            {
+                if( jedi->getAge() > people[i].getAge() )
+                    jedi = &people[i];
+                else if ( jedi->getAge() == people[i].getAge())
+                    if( Jedi::comp_names( &people[i], jedi) )
+                        jedi = &people[i];
+            }
+        }
+    }
+    jedi->print();
+}
+
+void Planet::printColourRank(string rank)
+{
+    checkPopulated();
+    checkRank(rank);
+    string best_colour="";
+    int max_colour_amount = 0;
+    for(int i=0; i < people.size(); i++)
+    {
+        int colour_amount = 0;
+        if( people[i].getRank() == rank)
+        {
+            for(int j=i; j < people.size(); j++)
+            {
+                if( people[j].getRank() == rank && people[j].getColour() == people[i].getColour())
+                    colour_amount++;
+            }
+            if( colour_amount > max_colour_amount )
+            {
+                max_colour_amount = colour_amount;
+                best_colour = people[i].getColour();
+            }
+        }
+    }
+    cout<<best_colour<< endl;
+}
+
+void Planet::printColourMaster()
+{
+    checkPopulated();
+    checkRank("GRAND_MASTER");
+    string best_colour="";
+    int max_colour_amount = 0;
+    for(int i=0; i < people.size(); i++)
+    {
+        int colour_amount = 0;
+        if( people[i].getRank() == "GRAND_MASTER")
+        {
+            for(int j=0; j < people.size(); j++)
+            {
+                if(people[j].getColour() == people[i].getColour())
+                    colour_amount++;
+            }
+            if( colour_amount > max_colour_amount )
+            {
+                max_colour_amount = colour_amount;
+                best_colour = people[i].getColour();
+            }
+        }
+    }
+    cout<<best_colour<< endl;
+}
+
+void Planet::print_sorted()
+{
+    checkPopulated();
+    vector<const Jedi*> jedi_arr( getJedi() );
+    sort(jedi_arr.begin(),jedi_arr.end(),Jedi::comp_rank);
+    for(int i=0; i< jedi_arr.size(); i++)
+    {
+        jedi_arr[i]->print();
+    }
 }

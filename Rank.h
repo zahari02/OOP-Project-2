@@ -18,7 +18,8 @@ public:
     Rank();
     Rank(string rank);
     //void setRank(string rank);
-    string getRank();
+    string getRank() const;
+    int getRankNum() const;
     void promote();
     void demote();
 };

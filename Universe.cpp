@@ -88,10 +88,10 @@ void Universe::addPlanet(string name)
     {
         planets.push_back(Planet(name));
         cout<<"Planet added\n";
+        unsaved_changes = true;
     }
     else
         cout<<"Error: Planet already exists.\n";
-    unsaved_changes = true;
 }
 
 void Universe::addJedi(string pname,string jname,string rank,int age,string colour,double strength)
@@ -111,6 +111,7 @@ void Universe::addJedi(string pname,string jname,string rank,int age,string colo
         return;
     }
     planet->addJedi(jname,rank,age,colour,strength);
+    cout<<"Jedi added\n";
     unsaved_changes = true;
 }
 
@@ -119,6 +120,7 @@ void Universe::removeJedi(string jname,string pname)
     checkPlanet(pname);
     Planet * planet = findPlanet(pname);
     planet->removeJedi(jname);
+    cout<<"Jedi removed\n";
     unsaved_changes = true;
 }
 
@@ -132,6 +134,7 @@ void Universe::promoteJedi(string jname,double mult)
         return;
     }
     jedi->promote(mult);
+    cout<<"Jedi promoted\n";
     unsaved_changes = true;
 }
 
@@ -145,6 +148,7 @@ void Universe::demoteJedi(string jname,double mult)
         return;
     }
     jedi->demote(mult);
+    cout<<"Jedi demoted\n";
     unsaved_changes = true;
 }
 
@@ -157,32 +161,71 @@ void Universe::getStrongest(string pname)
 
 void Universe::getYoungest(string pname,string rank)
 {
-
+    checkPlanet(pname);
+    Planet * planet = findPlanet(pname);
+    planet->printYoungest(rank);
 }
 
 void Universe::getColour2(string pname,string rank)
 {
-
+    checkPlanet(pname);
+    Planet * planet = findPlanet(pname);
+    planet->printColourRank(rank);
 }
 
 void Universe::getColour(string pname)
 {
-
+    checkPlanet(pname);
+    Planet * planet = findPlanet(pname);
+    planet->printColourMaster();
 }
 
 void Universe::print(string name)
 {
-    for(int i=0; i < planets.size(); i++)
+    Planet * planet = findPlanet(name);
+    if(planet == nullptr)
     {
-        if(planets[i].getName() == name)
+        Jedi * jedi;
+        for(int i=0; i<planets.size(); i++)
         {
-            planets[i].print();
-            return;
+            jedi = planets[i].findJedi(name);
+            if(jedi != nullptr)
+            {
+                cout<<"Planet: "<<planets[i].getName()<<endl;
+                jedi->print();
+                return;
+            }
         }
+        cout<<"No planet or jedi with such name\n";
+    }
+    else
+    {
+        planet->print_sorted();
     }
 }
 
 void Universe::print2(string pname1,string pname2)
 {
+    checkPlanet(pname1);
+    checkPlanet(pname2);
+    Planet *planet1 = findPlanet(pname1);
+    Planet *planet2 = findPlanet(pname2);
+    vector<const Jedi *> arr1( planet1->getJedi() ),arr2( planet2->getJedi() ),arr;
 
+    int size = arr1.size() + arr2.size();
+    if(planet1 == planet2)
+        size = arr1.size();
+
+    arr.resize( size );
+
+    for(int i=0; i < arr1.size(); i++)
+        arr[i]=arr1[i];
+    for(int i=arr1.size(); i<size; i++)
+            arr[i] = arr2[ i - arr1.size() ];
+
+    sort(arr.begin(),arr.end(),Jedi::comp_names);
+
+    cout<<"Jedi amount: "<<size<<endl;
+    for(const Jedi * jedi : arr)
+        jedi->print();
 }

@@ -32,7 +32,7 @@ const string ProgramExecuter::help =
 "exit       exists the program\n"
 "add_planet <planet_name>\n"
 "create_jedi <planet_name> <jedi_name> <jedi_rank> <jedi_age> <saber_color> <jedi_strength>\n"
-"removeJedi <jedi_name> <planet_name>\n"
+"remove_jedi <jedi_name> <planet_name>\n"
 "promote_jedi <jedi_name> <multiplier>\n"
 "demote_jedi <jedi_name> <multiplier>\n"
 "get_strongest_jedi <planet_name>\n"

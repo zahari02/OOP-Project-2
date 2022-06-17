@@ -39,9 +39,14 @@ bool Rank::validRank(string rank)
     return false;
 }
 
-string Rank::getRank()
+string Rank::getRank() const
 {
     return ranks[rank_num];
+}
+
+int Rank::getRankNum() const
+{
+    return rank_num;
 }
 
 void Rank::promote()

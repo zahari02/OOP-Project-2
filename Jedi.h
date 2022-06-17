@@ -16,20 +16,30 @@ class Jedi
     string colour;
     double strength;
 
+
+
 public:
+
+    static bool comp_names(const Jedi*,const Jedi*);
+    static bool comp_rank(const Jedi*,const Jedi*);
+
     Jedi();
     Jedi(string,Rank,int,string,double);
 
     void load(ifstream&);
     void save(ofstream&);
 
-    string& getName();
     void promote(double mult);
     void demote(double mult);
+
+
+    string getName();
     double getStrength();
     int getAge();
-    string& getColour();
-    void print();
+    string getColour();
+    string getRank();
+
+    void print() const;
 
 };
 
