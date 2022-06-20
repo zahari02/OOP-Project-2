@@ -38,7 +38,7 @@ const string ProgramExecuter::help =
 "get_strongest_jedi <planet_name>\n"
 "get_youngest_jedi <planet_name> <jedi_rank>\n"
 "get_most_used_saber_color <planet_name> <jedi_rank>\n"
-"get_most_used_saber_color <planet_name>\n"
+"get_most_used_saber_color <planet_name>        color used by at least one GRAND_MASTER\n"
 "print <planet_name>\n"
 "print <jedi_name>\n"
 "<planet_name> + <planet_name>      prints info for two planets\n"
